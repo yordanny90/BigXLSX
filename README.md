@@ -13,8 +13,6 @@ Esta librería permite leer archivos XLSX demasiado grandes para cargar todos lo
 composer require yordanny90/bigxlsx
 ```
 
-> BigXLSX depende de `yordanny90/bigxml`. Publica BigXML en Packagist con ese nombre o ajusta el nombre de la dependencia en `composer.json` antes de crear el tag de release.
-
 ## Requisitos
 
 - PHP 7.1 o superior
