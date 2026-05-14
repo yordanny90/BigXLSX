@@ -45,10 +45,3 @@ foreach ($sheet as $row) {
     // Usar cada fila de la hoja.
 }
 ```
-
-## Publicación en Packagist
-
-1. Verifica que `composer validate --strict` no reporte errores.
-2. Sube el repositorio a GitHub.
-3. Crea un release/tag semántico, por ejemplo `v1.0.0`.
-4. Registra `https://github.com/yordanny90/BigXLSX` en Packagist.
