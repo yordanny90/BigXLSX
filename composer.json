@@ -1,0 +1,30 @@
+{
+    "name": "yordanny90/bigxlsx",
+    "description": "Lector de archivos XLSX grandes sin cargar todo el contenido en memoria.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yordanny Mejias"
+        }
+    ],
+    "homepage": "https://github.com/yordanny90/BigXLSX",
+    "support": {
+        "issues": "https://github.com/yordanny90/BigXLSX/issues",
+        "source": "https://github.com/yordanny90/BigXLSX"
+    },
+    "require": {
+        "php": ">=7.1",
+        "ext-xmlreader": "*",
+        "ext-zip": "*",
+        "yordanny90/bigxml": "^1.0"
+    },
+    "suggest": {
+        "ext-sqlite3": "Permite usar cache SQLite para shared strings y estilos numericos."
+    },
+    "autoload": {
+        "psr-4": {
+            "BigXLSX\\": "src/BigXLSX/"
+        }
+    }
+}
