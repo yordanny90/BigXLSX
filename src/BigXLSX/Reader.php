@@ -86,11 +86,12 @@ class Reader{
 				$workfile=new \BigXML\File($this->getEntryPath($workbook));
 				$work_sheets=$workfile->getReader('workbook/sheets/sheet');
 				if($workbookPr=$workfile->getReader('workbook/workbookPr')){
-					if(in_array($workbookPr['date1904'], [
-						'1',
-						'true'
-					])){
-						$this->calendar=1094;
+					$date1904=strtolower(trim(strval($workbookPr['date1904']??'')));
+					if($date1904!=='' && !in_array($date1904, [
+							'0',
+							'false'
+						], true)){
+						$this->calendar=1904;
 					}
 				}
 				if(!$work_sheets) throw new Exception('XLSX workbook sheets not found');

@@ -15,6 +15,7 @@
     },
     "require": {
         "php": ">=7.1",
+        "ext-bcmath": "*",
         "ext-xmlreader": "*",
         "ext-zip": "*",
         "yordanny90/bigxml": "^1.0"
