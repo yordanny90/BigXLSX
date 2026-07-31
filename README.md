@@ -12,6 +12,7 @@ Esta librería permite leer archivos XLSX demasiado grandes para cargar todos lo
 ```bash
 composer require yordanny90/bigxlsx
 ```
+
 # Documentación
 
 Ver documentación completa en [DOCUMENTACION.md](DOCUMENTACION.md).
