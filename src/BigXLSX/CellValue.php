@@ -31,6 +31,7 @@ class CellValue implements \JsonSerializable{
 		return $this->value();
 	}
 
+	#[\ReturnTypeWillChange]
 	public function jsonSerialize(){
 		return $this->value();
 	}

@@ -163,6 +163,7 @@ class Sheet implements \IteratorAggregate{
 	/**
 	 * @return SheetIterator
 	 */
+	#[\ReturnTypeWillChange]
 	public function getIterator(){
 		return new SheetIterator($this, $this->getAlias());
 	}

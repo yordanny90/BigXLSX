@@ -14,6 +14,7 @@ class SQLiteArray implements \ArrayAccess, \Countable{
         return class_exists(\PDO::class) && in_array('sqlite', \PDO::getAvailableDrivers());
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset){
         $stmt=$this->data->prepare('SELECT 1 AS `e` FROM `data` WHERE `k`=:k');
         $stmt->bindValue(':k', $offset);
@@ -23,6 +24,7 @@ class SQLiteArray implements \ArrayAccess, \Countable{
         return false;
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset){
         $stmt=$this->data->prepare('SELECT `v` FROM `data` WHERE `k`=:k');
         $stmt->bindValue(':k', $offset);
@@ -32,6 +34,7 @@ class SQLiteArray implements \ArrayAccess, \Countable{
         return null;
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value){
         $stmt=$this->data->prepare('INSERT OR REPLACE INTO `data`(`k`,`v`) VALUES (:k, :v)');
         $stmt->bindValue(':k', $offset);
@@ -39,15 +42,16 @@ class SQLiteArray implements \ArrayAccess, \Countable{
         $stmt->execute();
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset){
         $stmt=$this->data->prepare('DELETE FROM `data` WHERE `k`=:k');
         $stmt->bindValue(':k', $offset);
         $stmt->execute();
     }
 
+    #[\ReturnTypeWillChange]
     public function count(){
         $stmt=$this->data->prepare('SELECT COUNT(*) FROM `data`');
-        $res=$stmt->execute();
         if($stmt->execute() && false!==($res=$stmt->fetchColumn(0))){
             return intval($res);
         }

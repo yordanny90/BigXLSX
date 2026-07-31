@@ -235,7 +235,9 @@ class Reader{
 	 * @return Table|null
 	 */
 	public function getTableByrId($tablerId){
-		list($sheetId, $tbrId)=explode(':', $tablerId, 2);
+		$parts=explode(':', strval($tablerId), 2);
+		if(count($parts)<2) return null;
+		list($sheetId, $tbrId)=$parts;
 		if($sheet=$this->getSheetByrId($sheetId)){
 			return $sheet->getTableByrId($tbrId);
 		}

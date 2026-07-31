@@ -102,9 +102,12 @@ class Table implements \IteratorAggregate{
 	}
 
 	public function alias(?array $alias){
-		foreach(array_keys($alias) AS $k){
-			if(is_numeric($k) && ($k<$this->getColumnBegin() || $k>$this->getColumnEnd())){
-				unset($alias);
+		if($alias){
+			foreach(array_keys($alias) AS $k){
+				// Descarta las columnas que quedan fuera del rango de la tabla
+				if(is_numeric($k) && ($k<$this->getColumnBegin() || $k>$this->getColumnEnd())){
+					unset($alias[$k]);
+				}
 			}
 		}
 		$this->sheet->alias($alias);
@@ -146,6 +149,7 @@ class Table implements \IteratorAggregate{
     /**
 	 * @return SheetIterator
 	 */
+	#[\ReturnTypeWillChange]
 	public function getIterator(){
 		return new SheetIterator($this->sheet, $this->getAlias()??$this->getTableColumns(), $this->getRowBegin(), $this->getColumnBegin(), $this->getRowEnd(), $this->getColumnEnd());
 	}

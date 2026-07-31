@@ -142,12 +142,13 @@ class SheetIterator implements \Iterator{
 	}
 
 	/**
-	 * @return \BigXML\Iterator|null
+	 * @return bool
 	 */
 	private function isCurrentRow(){
-		return ($this->sheetData->valid() && intval($this->sheetData->current()['r'])==($this->key+1));
+		return ($this->sheetData && $this->sheetData->valid() && intval($this->sheetData->current()['r'])==($this->key+1));
 	}
 
+	#[\ReturnTypeWillChange]
 	public function current(){
 		if(isset($this->cache[$this->key])){
 			return $this->cache[$this->key];
@@ -162,7 +163,12 @@ class SheetIterator implements \Iterator{
 		}
 	}
 
+	#[\ReturnTypeWillChange]
 	public function next(){
+		if(!$this->sheetData){
+			++$this->key;
+			return;
+		}
 		do{
 			++$this->key;
 			if(isset($this->cache[$this->key])) return;
@@ -172,10 +178,12 @@ class SheetIterator implements \Iterator{
 		}while($this->excludeHidden && $this->isCurrentRow() && ($row=$this->sheetData->current()) && ($row['hidden']??null) && strtolower($row['hidden'])!=='false');
 	}
 
+	#[\ReturnTypeWillChange]
 	public function key(){
 		return $this->key;
 	}
 
+	#[\ReturnTypeWillChange]
 	public function valid(){
 		if(!is_null($this->rowEnd) && $this->key()>$this->rowEnd){
 			return false;
@@ -183,6 +191,7 @@ class SheetIterator implements \Iterator{
 		return isset($this->cache[$this->key]) || ($this->sheetData && $this->sheetData->valid());
 	}
 
+	#[\ReturnTypeWillChange]
 	public function rewind(){
 		$this->cache=[];
 		$this->key=-1;
@@ -200,9 +209,12 @@ class SheetIterator implements \Iterator{
     static $cc=[];
 
 	public static function colToIndex(string $col){
+		// str_split('') devuelve [''] antes de PHP 8.2 y [] desde 8.2, lo que hacía
+		// que una referencia sin columna devolviera -1 en lugar de null
+		if($col==='') return null;
         if(isset(self::$cc[$col])) return self::$cc[$col];
 		$index=0;
-		foreach(str_split(strrev($col)) As $i=>&$l){
+		foreach(str_split(strrev($col)) As $i=>$l){
 			$n=intval(base_convert($l, 36, 10))-10;
 			if($n<0) return null;
 			$index+=($n+1)*(26**$i);
