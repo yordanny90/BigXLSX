@@ -126,9 +126,8 @@ class Table implements \IteratorAggregate{
 	public function getTableColumns(){
 		if($cols=$this->file->getReader('table/tableColumns/tableColumn')){
 			$list=[];
-			foreach($cols->getIterator() AS $col){
-				$pos=$this->getColumnBegin()+$col['id']-1;
-				$list[$pos]=$col['name'];
+			foreach($cols->getIterator() AS $i=>$col){
+				$list[$this->getColumnBegin()+$i]=$col['name'];
 			}
 			return $list;
 		}

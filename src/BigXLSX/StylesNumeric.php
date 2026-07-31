@@ -34,7 +34,7 @@ class StylesNumeric{
         return new static();
     }
 
-    public static function fromXML(\BigXML\File $xml=null, $sqlite=false){
+    public static function fromXML(\BigXML\File $xml, $sqlite=false){
         $new=new static();
         if($sqlite && SQLiteArray::isUsable()){
             $new->cache=new SQLiteArray();
@@ -157,6 +157,11 @@ class StylesNumeric{
 		if(bccomp(0, $dtValue, 17)>=0) return $dtValue;
 		$dateVal=bcdiv($dtValue, 1, 0);
 		$timeVal=bcsub($dtValue, $dateVal, 17);
+		$total_secs=intval(round($timeVal*86400));
+		if($total_secs>=86400){ // El redondeo alcanzó la medianoche del día siguiente
+			$total_secs=0;
+			$dateVal=bcadd($dateVal, 1, 0);
+		}
 		$result=[];
 		if($dateVal>0){
 			isset(self::CALENDAR_DATE[$calendar]) OR $calendar=1900;
@@ -165,10 +170,9 @@ class StylesNumeric{
 				$result[]=$date->format('Y-m-d');
 			}
 		}
-		if(($total_secs=round($timeVal*86400))>0){
-			if($date=date_create('today +'.$total_secs.' sec')){
-				$result[]=$date->format('H:i:s');
-			}
+		if($total_secs>0){
+			// gmdate evita el desfase de los días con cambio de horario
+			$result[]=gmdate('H:i:s', $total_secs);
 		}
 		return implode(' ', $result);
 	}

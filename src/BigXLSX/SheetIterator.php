@@ -109,9 +109,12 @@ class SheetIterator implements \Iterator{
 				$value=strval($cell->v)?1:0;
 				break;
 			case "inlineStr": // rich text inline
-				$x=new \XMLReader();
-				if($x->XML($cell->is->asXML()) && $x->read()){
-					$value=SharedStrings::normalizeString($x->readString());
+				if(isset($cell->is)){
+					$x=new \XMLReader();
+					if($x->XML($cell->is->asXML()) && $x->read()){
+						$value=SharedStrings::normalizeString($x->readString());
+					}
+					$x->close();
 				}
 				break;
 			case "e": // error message
