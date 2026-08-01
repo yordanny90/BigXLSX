@@ -12,8 +12,9 @@ Esta librería permite leer archivos XLSX demasiado grandes para cargar todos lo
 - PHP 7.1 o superior
 - Extensión `zip`
 - Extensión `xmlreader`
+- Extensión `bcmath`
 - Librería `yordanny90/bigxml`
-- Extensión `sqlite3` opcional para cache SQLite
+- Extensión `pdo_sqlite` opcional para cache SQLite
 
 ## Ejemplo básico
 
@@ -130,7 +131,7 @@ $errores = \BigXLSX\CellValue::extractErrors($row);
 Los textos compartidos (*shared strings*) y los estilos numéricos (fechas) se cargan en memoria la primera vez que se necesitan. Para archivos muy grandes, se puede usar SQLite como cache en disco en vez de memoria:
 
 ```php
-\BigXLSX\Reader::useSQLite(true); // requiere ext-sqlite3
+\BigXLSX\Reader::useSQLite(true); // requiere ext-pdo_sqlite
 ```
 
 También se puede conservar el cache entre instancias de `Reader` dentro del mismo proceso (por ejemplo, al procesar varios archivos con la misma estructura):
