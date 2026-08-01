@@ -21,7 +21,7 @@
         "yordanny90/bigxml": "^1.0"
     },
     "suggest": {
-        "ext-sqlite3": "Permite usar cache SQLite para shared strings y estilos numericos."
+        "ext-pdo_sqlite": "Permite usar cache SQLite para shared strings y estilos numericos."
     },
     "autoload": {
         "psr-4": {

@@ -57,13 +57,12 @@ class Reader{
 	 * @throws Exception
 	 */
 	protected function getEntryData($name){
-		$data=file_get_contents($this->getEntryPath($name));
+		// El fallo se convierte en excepción, por lo que se suprime el warning
+		$data=@file_get_contents($this->getEntryPath($name));
 		if($data===false){
 			throw new Exception("Entry does not exist in the Excel file: ".$name);
 		}
-		else{
-			return $data;
-		}
+		return $data;
 	}
 
 	public function getEntryPath($name){
@@ -180,7 +179,7 @@ class Reader{
 
     public function getSheetNames($alsoHidden=false){
 		$res=[];
-		foreach($this->sheets as &$sheet){
+		foreach($this->sheets as $sheet){
 			if(!$alsoHidden && $sheet->isHidden()) continue;
 			$res[$sheet->rId]=$sheet->name;
 		}
@@ -189,7 +188,7 @@ class Reader{
 
 	public function getTableNames($alsoHidden=false){
 		$res=[];
-		foreach($this->sheets as &$sheet){
+		foreach($this->sheets as $sheet){
 			if(!$alsoHidden && $sheet->isHidden()) continue;
 			$tables=$sheet->getTables();
 			foreach($tables AS $tb){
@@ -201,7 +200,7 @@ class Reader{
 
 	public function getSheetrIdNames($alsoHidden=false){
 		$res=[];
-		foreach($this->sheets as &$sheet){
+		foreach($this->sheets as $sheet){
 			if(!$alsoHidden && $sheet->isHidden()) continue;
 			$res[]=[
                 'type'=> 'sheet',
@@ -215,7 +214,7 @@ class Reader{
 
 	public function getTablerIdNames($alsoHidden=false){
 		$res=[];
-		foreach($this->sheets as &$sheet){
+		foreach($this->sheets as $sheet){
 			if(!$alsoHidden && $sheet->isHidden()) continue;
 			$tables=$sheet->getTables();
 			foreach($tables AS $tb){
@@ -247,7 +246,7 @@ class Reader{
 	public function getSheetCount($alsoHidden=false){
 		if(!$alsoHidden){
 			$c=0;
-			foreach($this->sheets as &$sheet){
+			foreach($this->sheets as $sheet){
 				if(!$sheet->isHidden()) ++$c;
 			}
 			return $c;
@@ -271,7 +270,7 @@ class Reader{
 	 * @return Sheet|null
 	 */
 	public function getSheetByName($sheetName){
-		foreach($this->sheets AS &$s){
+		foreach($this->sheets AS $s){
 			if($s->name===$sheetName) return $s;
 		}
 		return null;

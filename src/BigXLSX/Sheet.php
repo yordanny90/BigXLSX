@@ -24,7 +24,7 @@ class Sheet implements \IteratorAggregate{
 	 */
 	private $info;
 	/**
-	 * @var string
+	 * @var \BigXML\File
 	 */
 	private $file;
 	private $cellObject=false;
@@ -71,6 +71,7 @@ class Sheet implements \IteratorAggregate{
 			foreach($alias as $k=>&$v){
 				if(is_null($v)) $v=$k;
 			}
+			unset($v); // La referencia colgante se propagaría a la copia
 		}
 		$this->alias=$alias;
 	}
@@ -98,7 +99,7 @@ class Sheet implements \IteratorAggregate{
 	}
 
 	/**
-	 * @return string
+	 * @return \BigXML\File
 	 */
 	public function getFile(){
 		return $this->file;

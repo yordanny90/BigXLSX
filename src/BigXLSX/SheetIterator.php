@@ -3,8 +3,6 @@
 namespace BigXLSX;
 
 class SheetIterator implements \Iterator{
-	protected static $columnsName=[];
-
 	protected $sheet;
 	/**
 	 * @var SharedStrings
@@ -62,12 +60,16 @@ class SheetIterator implements \Iterator{
 		if(!count($this->hiddenCols) && $cols=$file->getReader('worksheet/cols/col')){
 			$hiddenCols=[];
 			foreach($cols->getIterator() As $col){
-				if($col['hidden'] && strtolower($col['hidden'])!=='false' && is_numeric($col['min'])){
-					$adds=array_keys(array_fill(intval($col['min'])-1,intval($col['max']??$col['min'])-intval($col['min'])+1,null));
-					$hiddenCols=array_merge($hiddenCols, $adds);
+				if(!$col['hidden'] || strtolower($col['hidden'])==='false') continue;
+				if(!is_numeric($col['min'])) continue;
+				$min=intval($col['min']);
+				$max=is_numeric($col['max']??null)?intval($col['max']):$min;
+				// Los atributos min/max son base 1 y el índice interno es base 0.
+				// Un rango invertido deja el bucle vacío, antes reventaba array_fill()
+				for($c=$min; $c<=$max; ++$c){
+					$hiddenCols[$c-1]=$c-1;
 				}
 			}
-			$hiddenCols=array_combine($hiddenCols, $hiddenCols);
 			$this->hiddenCols=$hiddenCols;
 		}
 	}

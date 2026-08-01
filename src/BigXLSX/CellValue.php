@@ -28,7 +28,7 @@ class CellValue implements \JsonSerializable{
 	}
 
 	public function __toString(){
-		return $this->value();
+		return strval($this->value());
 	}
 
 	#[\ReturnTypeWillChange]
@@ -37,9 +37,9 @@ class CellValue implements \JsonSerializable{
 	}
 
 	public static function extractErrors(array $row){
-		$err=array_filter($row, function($v) use (&$class){
-			return (is_a($v, self::class) && $v->isError());
-		}, ARRAY_FILTER_USE_BOTH)?:null;
+		$err=array_filter($row, function($v){
+			return ($v instanceof self && $v->isError());
+		})?:null;
 		if($err) $err=array_map(function($v){
 			return $v->errorMessage();
 		}, $err);
